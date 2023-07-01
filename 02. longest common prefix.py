@@ -19,14 +19,18 @@ from typing import List
 
 nums = [3,2,4]
 target = 6
-# strs = ["flower","flow","flight"]
-# strs = ["flower","flow","flight", ""]
-strs = ["a"]
+strs = ["flower","flow","flight", ""]
+strs = ["dog","racecar","car", ""]
 strs = ["cir","car"]
-# strs = ["dog","racecar","car", ""]
+strs = ["a"]
+strs = ["flower","flow","flight","fly"]
+strs = ["abab","aba","abc"]
+strs = ["flow", "flowering", "flonder"]
+
 
 class Solution:
-  def longestCommonPrefix(self, strs: List[str]) -> str:
+  def firstAttemptlongestCommonPrefix(self, strs: List[str]) -> str:
+    """First answers, beats only 5%"""
     answer = ""
     strs = sorted(strs, key=lambda x: len(x), reverse=True)
     curr = strs[0]
@@ -63,15 +67,60 @@ class Solution:
     
     return answer
 
+  def secondAttemptlongestCommonPrefix(self, strs: List[str]) -> str:
+    """Second attempt, taking first comparing against last"""
+    answer = ""
+    if len(strs) == 1:
+      return strs[0]
+    
+    strs = sorted(strs)
+
+    first = strs[0]
+    last = strs[-1]
+
+    for i in range(0, len(first)):
+      if (first[i] == last[i]):
+        answer +=first[i]
+      else:
+        break
+
+    for word in strs:
+      if answer not in word:
+        return ""
+
+    return answer
+  
+  def thirdAttemptlongestCommonPrefix(self, strs: List[str]) -> str:
+    strs = sorted(strs)
+    first = strs[0]
+    last = strs[-1]
+    idx = 0
+
+    while idx < len(first) and idx < len(last):
+      if first[idx] == last[idx]:
+        idx += 1
+      else:
+        break
+
+    return first[0:idx]
 
 s = Solution()
-print(s.longestCommonPrefix(strs))
+print(s.thirdAttemptlongestCommonPrefix(strs))
 
 
 
 # Thoughts
 # July 1 2023
-# Brute forced this, lots of test cases in leetcode, mixed me up
-# ppl on leetcode ask why this is marked as easy.. 
-# it's just arrays and brute force really, no complex algo if you don't want
-# but.. i agree, to do this efficiently requires some more understanding
+# firstAttemptlongestCommonPrefix
+#   Brute forced this, lots of test cases in leetcode, mixed me up
+#   ppl on leetcode ask why this is marked as easy.. 
+#   it's just arrays and brute force really, no complex algo if you don't want
+#   but.. i agree, to do this efficiently requires some more understanding
+# 
+# secondAttemptlongestCommonPrefix (second attempt)
+#   much better for me. inspired by https://leetcode.com/problems/longest-common-prefix/solutions/3174307/well-explained-code-using-strings-in-java/
+#   the trick was the sorted method. it returns 
+
+# thirdAttemptlongestCommonPrefix
+# this was just taking the same logic from the explanation
+
